@@ -6,7 +6,7 @@ const mediahandler = require('./handler/media')
 
 /* GET media listing. */
 router.get('/', mediahandler.getAllMedia);
-
 router.post('/', mediahandler.create)
+router.delete('/:id', mediahandler.destroy)
 
 module.exports = router;
