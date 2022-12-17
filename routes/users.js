@@ -15,4 +15,7 @@ router.post('/login', usershandler.login)
 /* Post User update. */
 router.put('/', verifyToken, usershandler.update)
 
+/* Get User . */
+router.get('/', verifyToken, usershandler.getUser)
+
 module.exports = router;
