@@ -12,6 +12,9 @@ router.post('/register', usershandler.register)
 /* Post User Login. */
 router.post('/login', usershandler.login)
 
+/* Post User Login. */
+router.post('/logout', verifyToken, usershandler.logout)
+
 /* Post User update. */
 router.put('/', verifyToken, usershandler.update)
 
