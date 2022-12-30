@@ -10,13 +10,13 @@ module.exports = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const mentor = await api.get(`/api/mentors/${id}`);
+        const course = await api.get(`/api/courses/${id}`);
 
-        return res.json(mentor.data);
+        return res.json(course.data);
     } catch (error) {
 
         if (error.code === 'ECONNREFUSED') {
-            return res.status(500).json({ status: 'error', message: 'service mentor unavailable' });
+            return res.status(500).json({ status: 'error', message: 'service course unavailable' });
         }
 
         const { status, data } = error.response;
