@@ -11,8 +11,7 @@ module.exports = async (req, res) => {
         console.log("try");
         const chapters = await api.get('/api/chapters', {
             params: {
-                ...req.query,
-                status: 'published'
+                ...req.query
             }
         });
 
@@ -34,7 +33,7 @@ module.exports = async (req, res) => {
         //     const nextPage = chaptersData.data.next_page_url.split('?').pop();
         //     chaptersData.data.next_page_url = `${  HOSTNAME}/chapters?${nextPage}`
         // }
-        
+
         // // mengubah prev_page_url
         // if (chaptersData.data.prev_page_url) {
         //     const prevPage = chaptersData.data.prev_page_url.split('?').pop();
