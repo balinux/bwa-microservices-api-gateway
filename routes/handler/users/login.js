@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
     } catch (error) {
 
         if (error.code === 'ECONNREFUSED') {
-            return res.status(500).json({ status: 'error', message: 'service for create media unavailable' });
+            return res.status(500).json({ status: 'error', message: 'service user unavailable' });
         }
 
         const { status, data } = error.response;
