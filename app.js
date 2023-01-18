@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const winston = require('winston');
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -24,6 +25,32 @@ const can = require("./middlewares/permission");
 
 const app = express();
 
+// create a Winston logger instance
+const loggerW = winston.createLogger({
+  transports: [
+    new winston.transports.File({ filename: "combined.log" }),
+    new winston.transports.File({
+      filename: "error.log",
+      level: "error",
+    }),
+    new winston.transports.Console(),
+  ],
+});
+
+app.use((err, req, res, next) => {
+    loggerW.error(err.message);
+    res.status(500).send('Something went wrong');
+});
+
+
+process.on('uncaughtException', function (err) {
+    logger.error(err);
+});
+process.on('unhandledRejection', function (err) {
+    logger.error(err);
+});
+
+
 app.use(logger("combined"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));
@@ -33,15 +60,15 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/courses", coursesRouter);
-app.use("/media", verifyToken, can('admin', 'student'), mediaRouter);
-app.use("/orders", verifyToken, can('admin', 'student'), orderPaymentsRouter);
+app.use("/media", verifyToken, can("admin", "student"), mediaRouter);
+app.use("/orders", verifyToken, can("admin", "student"), orderPaymentsRouter);
 app.use("/refresh-tokens", refreshTokensRouter);
-app.use("/mentors", verifyToken, can('admin'), mentorsRouter);
-app.use("/chapters", verifyToken, can('admin'), chaptersRouter);
-app.use("/lessons", verifyToken, can('admin'), lessonsRouter);
-app.use("/image-courses", verifyToken, can('admin'), imageCoursesRouter);
-app.use("/my-courses", verifyToken, can('admin', 'student'), myCoursesRouter);
-app.use("/reviews", verifyToken, can('admin', 'student'), reviewsRouter);
+app.use("/mentors", verifyToken, can("admin"), mentorsRouter);
+app.use("/chapters", verifyToken, can("admin"), chaptersRouter);
+app.use("/lessons", verifyToken, can("admin"), lessonsRouter);
+app.use("/image-courses", verifyToken, can("admin"), imageCoursesRouter);
+app.use("/my-courses", verifyToken, can("admin", "student"), myCoursesRouter);
+app.use("/reviews", verifyToken, can("admin", "student"), reviewsRouter);
 app.use("/webhook", webhookRouter);
 
 module.exports = app;
