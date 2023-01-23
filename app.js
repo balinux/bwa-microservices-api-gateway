@@ -4,6 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const winston = require('winston');
+const cors = require('cors');
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -24,6 +25,9 @@ const verifyToken = require("./middlewares/veryfyToken");
 const can = require("./middlewares/permission");
 
 const app = express();
+
+// cors
+app.use(cors({ origin: '*' }));
 
 // create a Winston logger instance
 const loggerW = winston.createLogger({
